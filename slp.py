@@ -1,6 +1,7 @@
 import numpy as np
 #import matplotlib.pylab as plt
 import heapq
+import random
 
 # agent wheel direction
 c='center' # 0 degrees, straight ahead
@@ -26,8 +27,22 @@ heading = [n,s,e,w]
 # at the same time
 
 # build state lattice
-state_lattice = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
-for i in range(10):
+# determine parameters for lattice (can change based on preference)
+nrows = 10
+ncols = 10
+state_lattice = []
+for i in range(nrows):
+    list_row = []
+    for j in range(ncols):
+        list_row.append(0)
+    state_lattice.append(list_row)
+# in the state lattice, a '0' means the (x,y) position is open and a '1'
+# means the (x,y) position is blocked
+
+# *** add functionality to randomly insert '1s' into state lattice 
+
+print("State Lattice:")
+for i in range(nrows):
     print(state_lattice[i])
 
 # build state graph
