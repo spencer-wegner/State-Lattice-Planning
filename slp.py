@@ -26,33 +26,48 @@ heading = [n,s,e,w]
 # remain at same (x,y) coordinate and change wheel direction - cannot do both
 # at the same time
 
-# build state lattice
-# determine parameters for lattice (can change based on preference)
-nrows = 10
-ncols = 10
-state_lattice = []
-for i in range(nrows):
-    list_row = []
-    for j in range(ncols):
-        list_row.append(0)
-    state_lattice.append(list_row)
-# in the state lattice, a '0' means the (x,y) position is open and a '1'
-# means the (x,y) position is blocked
+# this function constructs the state lattice — a list of lists (multi
+# dimensional array)
+def build_state_lattice(nrows, ncols):
+    state_lattice = []
+    for i in range(nrows):
+        list_row = []
+        for j in range(ncols):
+            list_row.append(0)
+        state_lattice.append(list_row)
+    # in the state lattice, a '0' means the (x,y) position is open and a '1'
+    # means the (x,y) position is blocked
 
-# *** add functionality to randomly insert '1s' into state lattice 
+    # *** add functionality to randomly insert '1s' into state lattice
 
-print("State Lattice:")
-for i in range(nrows):
-    print(state_lattice[i])
+    print("State Lattice:")
+    for i in range(nrows):
+        print(state_lattice[i])
+
+    return state_lattice
 
 # build state graph
-state_graph = {}
-# create all nodes
-for x in range(len(state_lattice[0])):
-    for y in range(len(state_lattice)):
-        for h in heading:
-            for a in angle:
-                state_graph[(x,y,h,a)] = []
+def build_state_graph(state_lattice):
+    state_graph = {}
+    # create all nodes
+    for x in range(len(state_lattice[0])):
+        for y in range(len(state_lattice)):
+            for h in heading:
+                for a in angle:
+                    state_graph[(x,y,h,a)] = []
 
-print("state_graph = \n", state_graph)
-print("# of nodes = ", len(state_graph))
+    print("# of nodes = ", len(state_graph))
+
+    # create edges in state graph
+    return state_graph
+
+# main function
+def main():
+    # build a state lattice
+    nrows = 10
+    ncols = 10
+    state_lattice = build_state_lattice(nrows, ncols)
+    state_graph = build_state_graph(state_lattice)
+
+if __name__ == '__main__':
+    main()
