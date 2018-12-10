@@ -561,6 +561,56 @@ def assign_edges(state_lattice, state_graph):
                 state_graph[node][(node[0]-1, node[1]-1, s, l)] = 1
     return state_graph
 
+# this function is a helper functin to update_knowledge
+# it breaks all ties (neighbors) with nodes that are blocked
+def extract_node(x, y, state_graph):
+    # remove all connections to extracted node
+    for node in state_graph:
+        for neighbor in node:
+            pass
+    return state_graph
+
+# this function updates the agent's state graph (agent's knowledge) about
+# obstacles in the state lattice - the agent can see adjacent (x,y) positions
+def update_knowledge(current_state, current_state_graph, state_lattice, vision):
+    new_state_graph = current_state_graph
+    x = current_state[0]
+    y = current_state[1]
+    for i in range(vision):
+        # search south
+        if (x + (i + 1) < len(state_lattice)):
+            if state_lattice[x + (i + 1)][y] == 1:
+                new_state_graph = extract_node(x + (i + 1), y, new_state_graph)
+        # search north
+        if (x - (i + 1)) >= 0:
+            if state_lattice[x - (i + 1)][y] == 1:
+                new_state_graph = extract_node(x - (i + 1), y, new_state_graph)
+        # search east
+        if (y + (i + 1)) < len(state_lattice[0]):
+            if state_lattice[x][y + (i + 1)] == 1:
+                new_state_graph = extract_node(x, y + (i + 1), new_state_graph)
+        # search west
+        if (y - (i + 1)) >= 0:
+            if state_lattice[x][y - (i + 1)] == 1:
+                new_state_graph = extract_node(x, y - (i + 1), new_state_graph)
+        # search northwest
+        if ((x - (i + 1)) >= 0) and ((y - (i + 1)) >= 0):
+            if state_lattice[x - (i + 1)][y - (i + 1)] == 1:
+                new_state_graph = extract_node(x - (i + 1), y - (i + 1), new_state_graph)
+        # search northeast
+        if ((x - (i + 1)) >= 0)) and ((y + (i + 1)) < len(state_lattice[0])):
+            if state_lattice[x - (i + 1)][y + (i + 1)] == 1:
+                new_state_graph = extract_node(x - (i + 1), y + (i + 1), new_state_graph)
+        # search southwest
+        if ((x + (i + 1)) < len(state_lattice)) and ((y - (i + 1)) >= 0):
+            if state_lattice[x + (i + 1)][y - (i + 1)] == 1:
+                new_state_graph = extract_node(x + (i + 1), y - (i + 1), new_state_graph)
+        # search southeast
+        if ((x + (i + 1)) < len(state_lattice)) and ((y + (i + 1)) < len(state_lattice[0])):
+            if state_lattice[x + (i + 1)][y + (i + 1)] == 1:
+                new_state_graph = extract_node(x + (i + 1), y + (i + 1), new_state_graph)
+    return new_state_graph
+
 # this function constructs a path that the agent follows through the state space
 def path(previous, s):
     '''
@@ -655,14 +705,33 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
 # main function
 def main():
     # build a state lattice
+    # adjust nrows and ncolumns to your liking
     nrows = 10
     ncols = 10
     state_lattice = build_state_lattice(nrows, ncols)
     state_graph_init = build_state_graph(state_lattice)
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
+    agent_state_graph = state_graph_complete # agent starts by thinking entire state space is free
+
+    # adjust start and goal states and agent vision to your liking
     start = (0,0,s,c)
     goal = (8,8,n,l)
-    path, cost, nodes_expanded = astar_search(start, goal, state_graph_complete, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
+    agent_vision = 1
+    agent_location = start # variable to keep track of agent's location
+    while True:
+        if agent_location == goal:
+            print("Agent reached goal state ", goal)
+            break
+        # update agent's knowledge based on current location
+        agent_state_graph = update_knowledge(agent_location, agent_state_graph, state_lattice, agent_vision)
+        # make new A* plan
+        path, cost, nodes_expanded = astar_search(agent_location, goal, agent_state_graph, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
+        for state in path:
+            if state_lattice[state[0]][state[1]] == 1: # can't go there!
+                break
+            else:
+                agent_location = state
+
     print("Path: ", path)
     print("Cost: ", cost)
     print("# of nodes expanded: ", nodes_expanded)
