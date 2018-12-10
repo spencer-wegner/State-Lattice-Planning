@@ -567,7 +567,7 @@ def extract_node(x, y, state_graph):
     # remove all connections to extracted node
     for node in state_graph:
         for neighbor in node:
-            pass
+            if state_graph[node][neighbor]
     return state_graph
 
 # this function updates the agent's state graph (agent's knowledge) about
