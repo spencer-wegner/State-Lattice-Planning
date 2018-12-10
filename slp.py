@@ -59,7 +59,7 @@ def build_state_graph(state_lattice):
         for y in range(len(state_lattice)):
             for h in heading:
                 for a in angle:
-                    state_graph[(x,y,h,a)] = []
+                    state_graph[(x,y,h,a)] = {}
     print("# of nodes = ", len(state_graph))
     return state_graph
 
@@ -69,493 +69,493 @@ def assign_edges(state_lattice, state_graph):
         # upper left corner
         if (node[0] == 0 and node[1] == 0):
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]+1, node[1]+1, w, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, w, r)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]+1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]+1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]+1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]+1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]+1, e, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, e, l)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]+1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]+1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]+1, node[1]+1, n, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, n, l)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]+1, node[1]+1, s, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, s, r)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]+1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]+1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
         # bottom left corner
         elif (node[0] == (len(state_lattice) - 1) and node[1] == 0):
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]+1, e, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, e, r)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]-1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]-1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]-1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]-1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]-1, node[1]+1, w, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, w, l)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]-1, node[1]+1, s, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, s, r)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]+1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]+1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]+1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]+1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]-1, node[1]+1, n, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, n, l)] = 1
         # upper right corner
         elif (node[0] == 0 and node[1] == (len(state_lattice[0]) - 1)):
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]+1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]+1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]+1, node[1]-1, e, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, e, l)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]-1, w, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, w, r)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]+1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]+1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]-1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]-1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]+1, node[1]-1, s, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, s, l)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]+1, node[1]-1, n, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, n, r)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]-1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]-1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
         # bottom right corner
         elif (node[0] == (len(state_lattice) - 1) and node[1] == (len(state_lattice[0]) - 1)):
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]-1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]-1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]-1, w, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, w, l)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]-1, node[1]-1, e, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, e, r)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]-1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]-1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]-1, node[1]-1, n, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, n, r)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]-1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]-1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]-1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]-1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]-1, node[1]-1, s, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, s, l)] = 1
         # top edge
         elif node[0] == 0:
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]+1, node[1]+1, w, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, w, r)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]+1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]+1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]+1, node[1]-1, e, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, e, l)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]-1, w, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, w, r)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]+1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]+1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]+1, e, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, e, l)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]-1, w, c))
-                state_graph[node].append((node[0], node[1]+1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]-1, w, c)] = 1
+                state_graph[node][(node[0], node[1]+1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]+1, node[1]-1, s, l))
-                state_graph[node].append((node[0]+1, node[1]+1, n, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, s, l)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, n, l)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]+1, node[1]+1, s, r))
-                state_graph[node].append((node[0]+1, node[1]-1, n, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, s, r)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, n, r)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]+1, e, c))
-                state_graph[node].append((node[0], node[1]-1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]+1, e, c)] = 1
+                state_graph[node][(node[0], node[1]-1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
         # bottom edge
         elif node[0] == (len(state_lattice) - 1):
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]+1, e, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, e, r)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]-1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]-1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]-1, w, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, w, l)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]-1, node[1]-1, e, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, e, r)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]-1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]-1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]-1, node[1]+1, w, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, w, l)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]-1, node[1]-1, n, r))
-                state_graph[node].append((node[0]-1, node[1]+1, s, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, n, r)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, s, r)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]-1, w, c))
-                state_graph[node].append((node[0], node[1]+1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]-1, w, c)] = 1
+                state_graph[node][(node[0], node[1]+1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]+1, e, c))
-                state_graph[node].append((node[0], node[1]-1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]+1, e, c)] = 1
+                state_graph[node][(node[0], node[1]-1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]-1, node[1]+1, n, l))
-                state_graph[node].append((node[0]-1, node[1]-1, s, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, n, l)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, s, l)] = 1
         # left edge
         elif node[1] == 0:
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]+1, e, r))
-                state_graph[node].append((node[0]+1, node[1]+1, w, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, e, r)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, w, r)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]-1, node[1], n, c))
-                state_graph[node].append((node[0]+1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]-1, node[1], n, c)] = 1
+                state_graph[node][(node[0]+1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]+1, node[1], s, c))
-                state_graph[node].append((node[0]-1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]+1, node[1], s, c)] = 1
+                state_graph[node][(node[0]-1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]+1, e, l))
-                state_graph[node].append((node[0]-1, node[1]+1, w, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, e, l)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, w, l)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]-1, node[1]+1, s, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, s, r)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]+1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]+1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]+1, node[1]+1, n, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, n, l)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]+1, node[1]+1, s, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, s, r)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]+1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]+1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]-1, node[1]+1, n, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, n, l)] = 1
         # right edge
         elif node[1] == (len(state_lattice[0]) - 1):
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]-1, node[1], n, c))
-                state_graph[node].append((node[0]+1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]-1, node[1], n, c)] = 1
+                state_graph[node][(node[0]+1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]-1, w, l))
-                state_graph[node].append((node[0]+1, node[1]-1, e, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, w, l)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, e, l)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]-1, w, r))
-                state_graph[node].append((node[0]-1, node[1]-1, e, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, w, r)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, e, r)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]+1, node[1], s, c))
-                state_graph[node].append((node[0]-1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]+1, node[1], s, c)] = 1
+                state_graph[node][(node[0]-1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]-1, node[1]-1, n, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, n, r)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]-1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]-1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]+1, node[1]-1, s, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, s, l)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]+1, node[1]-1, n, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, n, r)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]-1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]-1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]-1, node[1]-1, s, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, s, l)] = 1
         # everything else in the middle
         else:
             if node[2] == n and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]+1, e, r))
-                state_graph[node].append((node[0]+1, node[1]+1, w, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, e, r)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, w, r)] = 1
             elif node[2] == n and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, l))
-                state_graph[node].append((node[0], node[1], n, r))
-                state_graph[node].append((node[0]-1, node[1], n, c))
-                state_graph[node].append((node[0]+1, node[1], n, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, l)] = 1
+                state_graph[node][(node[0], node[1], n, r)] = 1
+                state_graph[node][(node[0]-1, node[1], n, c)] = 1
+                state_graph[node][(node[0]+1, node[1], n, c)] = 1
             elif node[2] == n and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], n, c))
-                state_graph[node].append((node[0]-1, node[1]-1, w, l))
-                state_graph[node].append((node[0]+1, node[1]-1, e, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], n, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, w, l)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, e, l)] = 1
             elif node[2] == s and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]-1, w, r))
-                state_graph[node].append((node[0]-1, node[1]-1, e, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, w, r)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, e, r)] = 1
             elif node[2] == s and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, l))
-                state_graph[node].append((node[0], node[1], s, r))
-                state_graph[node].append((node[0]+1, node[1], s, c))
-                state_graph[node].append((node[0]-1, node[1], s, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, l)] = 1
+                state_graph[node][(node[0], node[1], s, r)] = 1
+                state_graph[node][(node[0]+1, node[1], s, c)] = 1
+                state_graph[node][(node[0]-1, node[1], s, c)] = 1
             elif node[2] == s and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], s, c))
-                state_graph[node].append((node[0]+1, node[1]+1, e, l))
-                state_graph[node].append((node[0]-1, node[1]+1, w, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], s, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, e, l)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, w, l)] = 1
             elif node[2] == w and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]-1, node[1]-1, n, r))
-                state_graph[node].append((node[0]-1, node[1]+1, s, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, n, r)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, s, r)] = 1
             elif node[2] == w and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, l))
-                state_graph[node].append((node[0], node[1], w, r))
-                state_graph[node].append((node[0], node[1]-1, w, c))
-                state_graph[node].append((node[0], node[1]+1, w, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, l)] = 1
+                state_graph[node][(node[0], node[1], w, r)] = 1
+                state_graph[node][(node[0], node[1]-1, w, c)] = 1
+                state_graph[node][(node[0], node[1]+1, w, c)] = 1
             elif node[2] == w and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], w, c))
-                state_graph[node].append((node[0]+1, node[1]-1, s, l))
-                state_graph[node].append((node[0]+1, node[1]+1, n, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], w, c)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, s, l)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, n, l)] = 1
             elif node[2] == e and node[3] == r:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]+1, node[1]+1, s, r))
-                state_graph[node].append((node[0]+1, node[1]-1, n, r))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]+1, node[1]+1, s, r)] = 1
+                state_graph[node][(node[0]+1, node[1]-1, n, r)] = 1
             elif node[2] == e and node[3] == c:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, l))
-                state_graph[node].append((node[0], node[1], e, r))
-                state_graph[node].append((node[0], node[1]+1, e, c))
-                state_graph[node].append((node[0], node[1]-1, e, c))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, l)] = 1
+                state_graph[node][(node[0], node[1], e, r)] = 1
+                state_graph[node][(node[0], node[1]+1, e, c)] = 1
+                state_graph[node][(node[0], node[1]-1, e, c)] = 1
             elif node[2] == e and node[3] == l:
-                state_graph[node].append(node)
-                state_graph[node].append((node[0], node[1], e, c))
-                state_graph[node].append((node[0]-1, node[1]+1, n, l))
-                state_graph[node].append((node[0]-1, node[1]-1, s, l))
+                state_graph[node][node] = 0
+                state_graph[node][(node[0], node[1], e, c)] = 1
+                state_graph[node][(node[0]-1, node[1]+1, n, l)] = 1
+                state_graph[node][(node[0]-1, node[1]-1, s, l)] = 1
     return state_graph
 
 # this function constructs a path that the agent follows through the state space
@@ -651,8 +651,8 @@ def main():
     state_lattice = build_state_lattice(nrows, ncols)
     state_graph_init = build_state_graph(state_lattice)
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
-    #for node in state_graph_complete:
-        #print(state_graph_complete[node])
+    for node in state_graph_complete:
+        print(state_graph_complete[node])
 
 if __name__ == '__main__':
     main()
