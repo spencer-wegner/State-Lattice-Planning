@@ -612,7 +612,6 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
                     solution_path = path(prev, x[1])
                     nexp = len(visited) # number of nodes expanded is the number of nodes visited
                     if return_cost:
-                        # *** if we want to use this we will need to adjust definition of state_graph - costs equal 1
                         path_cost = pathcost(solution_path, state_graph)
                         return (solution_path, path_cost, nexp)
                     else:
@@ -620,14 +619,28 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
                 else:
                     if return_cost:
                         solution_path = path(prev, x[1])
-                        # *** if we want to use this we will need to adjust definition of state_graph - costs equal 1
                         path_cost = pathcost(solution_path, state_graph)
                         return (solution_path, path_cost)
                     else:
                         return path(prev, x[1])
             else: # we haven't found the goal yet...
                 for neighbor in state_graph[x[1]]:
-                    
+                    if neighbor not in visited:
+                        if neighbor not in prev:
+                            # add neighbor as key and current state as value
+                            prev[neighbor] = x[1] # x[1] is predecessor to neighbor
+                        current_cost = my_frontier.states[x[1]]
+                        additional_cost = state_graph[x[1]][neighbor]
+                        new_cost = current_cost + additional_cost
+                        heuristic_score = heuristic(neighbor)
+                        astar_score = new_cost + heuristic_score
+                        my_frontier.add(neighbor, astar_score) # add neighbor and cost to priority queue
+                        if neighbor not in my_frontier.states:
+                            my_frontier.states[neighbor] = new_cost
+                        if new_cost < my_frontier.states[neighbor]:
+                            # update states dictionary if cheaper path is found
+                            my_frontier.replace(neighbor, new_cost)
+                            prev[neighbor] = x[1]
 
 
 # main function
