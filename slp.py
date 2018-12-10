@@ -1,6 +1,7 @@
 import numpy as np
 #import matplotlib.pylab as plt
 import heapq
+from scipy.spatial import distance
 
 # agent wheel direction
 c='center' # 0 degrees, straight ahead
@@ -30,6 +31,8 @@ heading = [n,s,e,w]
 # their wheels will remain in the same turned position when they arrive
 # so the agent will need to make an extra step to adjust the wheels if it
 # wants to move straight after it makes a turn
+# the cost to move along any edge is 1 (uniform across all actions)
+# the agent can also stay in its current state with a cost of 0
 
 # this function constructs the state lattice — a list of lists (multi
 # dimensional array)
@@ -599,6 +602,13 @@ class Frontier_PQ:
     def replace(self, state, cost):
         self.states[state] = cost
 
+# this function calculates the heuristic for the A* search algorithm
+def euclidean_distance(current_state, goal):
+    # here we use the Euclidean distance
+    start_pos = (current_state[0], current_state[1])
+    end_pos = (goal[0], goal[1])
+    return distance.euclidean(start_pos, end_pos)
+
 def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost = False, return_nexp = False):
     my_frontier = Frontier_PQ(start) # create a priority queue
     visited = []
@@ -632,7 +642,7 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
                         current_cost = my_frontier.states[x[1]]
                         additional_cost = state_graph[x[1]][neighbor]
                         new_cost = current_cost + additional_cost
-                        heuristic_score = heuristic(neighbor)
+                        heuristic_score = heuristic(neighbor, goal)
                         astar_score = new_cost + heuristic_score
                         my_frontier.add(neighbor, astar_score) # add neighbor and cost to priority queue
                         if neighbor not in my_frontier.states:
@@ -642,7 +652,6 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
                             my_frontier.replace(neighbor, new_cost)
                             prev[neighbor] = x[1]
 
-
 # main function
 def main():
     # build a state lattice
@@ -651,8 +660,12 @@ def main():
     state_lattice = build_state_lattice(nrows, ncols)
     state_graph_init = build_state_graph(state_lattice)
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
-    for node in state_graph_complete:
-        print(state_graph_complete[node])
+    start = (0,0,s,c)
+    goal = (8,8,n,l)
+    path, cost, nodes_expanded = astar_search(start, goal, state_graph_complete, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
+    print("Path: ", path)
+    print("Cost: ", cost)
+    print("# of nodes expanded: ", nodes_expanded)
 
 if __name__ == '__main__':
     main()
