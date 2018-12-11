@@ -760,10 +760,16 @@ def main():
             agent_path.append(agent_location)
             break
         # update agent's knowledge based on current location
-        print("agent updating its knowledge of state graph")
+        print("agent updating its knowledge of state graph\n")
         agent_state_graph = update_knowledge(agent_location, agent_state_graph, state_lattice, agent_vision)
         # make new A* plan
-        path, cost, nodes_expanded = astar_search(agent_location, goal, agent_state_graph, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
+
+        astar_result = astar_search(agent_location, goal, agent_state_graph, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
+        if(astar_result==None):
+            print("************************\nNo possible path to goal\n************************\n")
+
+            break
+        path, cost, nodes_expanded = astar_result[0], astar_result[1], astar_result[2]
         astar_plans += 1
         total_cost += cost
         total_nodes_expanded += nodes_expanded
