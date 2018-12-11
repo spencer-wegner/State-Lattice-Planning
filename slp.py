@@ -43,7 +43,7 @@ def build_state_lattice(nrows, ncols):
         for j in range(ncols):
             # randomly choose a 0 or 1 for each location - define probability
             # distribution with p = [0.x, 0.x]
-            list_row.append(np.random.choice([0,1], p = [0.9, 0.1]))
+            list_row.append(np.random.choice([0,1], p = [0.5, 0.5]))
         state_lattice.append(list_row)
     # in the state lattice, a '0' means the (x,y) position is open and a '1'
     # means the (x,y) position is blocked
@@ -725,6 +725,7 @@ def main():
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
     agent_state_graph = state_graph_complete # agent starts by thinking entire state space is free
 
+    '''
     possible_locations = []
     for i in range(len(state_lattice)):
         for j in range(len(state_lattice[0])):
@@ -733,13 +734,19 @@ def main():
     print(possible_locations)
     start = np.random.choice(possible_locations)
     goal = np.random.choice(possible_locations)
-    agent_vision = 1
     print("start location: ", start)
     print("goal location: ", goal)
     print("agent vision: ", agent_vision)
     # adjust start and goal states and agent vision to your liking
-    #start = (0,0,s,c)
-    #goal = (8,8,n,l)
+    '''
+    start = (0,0,s,c)
+    goal = (8,8,n,l)
+    if(state_lattice[start[0]][start[1]]==1):
+        state_lattice[start[0]][start[1]]=0
+    if(state_lattice[goal[0]][goal[1]]==1):
+        state_lattice[goal[0]][goal[1]]=0
+
+    agent_vision = 1
 
     agent_location = start # variable to keep track of agent's location
 
