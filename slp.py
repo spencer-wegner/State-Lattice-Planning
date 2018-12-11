@@ -564,10 +564,22 @@ def assign_edges(state_lattice, state_graph):
 # this function is a helper functin to update_knowledge
 # it breaks all ties (neighbors) with nodes that are blocked
 def extract_node(x, y, state_graph):
-    # remove all connections to extracted node
+    # remove nodes with position (x,y)
+    to_delete = []
     for node in state_graph:
-        for neighbor in node:
-            if state_graph[node][neighbor]
+        if node[0] == x and node[1] == y:
+            to_delete.append(node)
+    for item in to_delete:
+        del state_graph[item]
+
+    # look for connections (neighbors) to a node (x,y) in other nodes
+    to_delete = []
+    for node in state_graph:
+        for neighbor in state_graph[node]:
+            if neighbor[0] == x and neighbor[1] == y:
+                to_delete.append((node, neighbor))
+    for (node, neighbor) in to_delete:
+        del state_graph[node][neighbor]
     return state_graph
 
 # this function updates the agent's state graph (agent's knowledge) about
@@ -598,7 +610,7 @@ def update_knowledge(current_state, current_state_graph, state_lattice, vision):
             if state_lattice[x - (i + 1)][y - (i + 1)] == 1:
                 new_state_graph = extract_node(x - (i + 1), y - (i + 1), new_state_graph)
         # search northeast
-        if ((x - (i + 1)) >= 0)) and ((y + (i + 1)) < len(state_lattice[0])):
+        if ((x - (i + 1)) >= 0) and ((y + (i + 1)) < len(state_lattice[0])):
             if state_lattice[x - (i + 1)][y + (i + 1)] == 1:
                 new_state_graph = extract_node(x - (i + 1), y + (i + 1), new_state_graph)
         # search southwest
@@ -718,11 +730,13 @@ def main():
     goal = (8,8,n,l)
     agent_vision = 1
     agent_location = start # variable to keep track of agent's location
+    print("start location: ", agent_location)
     while True:
         if agent_location == goal:
             print("Agent reached goal state ", goal)
             break
         # update agent's knowledge based on current location
+        print("agent updating its knowledge of state graph")
         agent_state_graph = update_knowledge(agent_location, agent_state_graph, state_lattice, agent_vision)
         # make new A* plan
         path, cost, nodes_expanded = astar_search(agent_location, goal, agent_state_graph, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
@@ -731,10 +745,11 @@ def main():
                 break
             else:
                 agent_location = state
+                print(agent_location)
 
-    print("Path: ", path)
+    '''print("Path: ", path)
     print("Cost: ", cost)
-    print("# of nodes expanded: ", nodes_expanded)
+    print("# of nodes expanded: ", nodes_expanded)'''
 
 if __name__ == '__main__':
     main()
