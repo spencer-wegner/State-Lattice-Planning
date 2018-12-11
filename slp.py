@@ -725,31 +725,57 @@ def main():
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
     agent_state_graph = state_graph_complete # agent starts by thinking entire state space is free
 
-    # adjust start and goal states and agent vision to your liking
-    start = (0,0,s,c)
-    goal = (8,8,n,l)
+    possible_locations = []
+    for i in range(len(state_lattice)):
+        for j in range(len(state_lattice[0])):
+            if state_lattice[i][j] == 0:
+                possible_locations.append((i,j))
+    print(possible_locations)
+    start = np.random.choice(possible_locations)
+    goal = np.random.choice(possible_locations)
     agent_vision = 1
+    print("start location: ", start)
+    print("goal location: ", goal)
+    print("agent vision: ", agent_vision)
+    # adjust start and goal states and agent vision to your liking
+    #start = (0,0,s,c)
+    #goal = (8,8,n,l)
+
     agent_location = start # variable to keep track of agent's location
-    print("start location: ", agent_location)
+
+    agent_path = []
+    total_cost = 0
+    total_nodes_expanded = 0
+    astar_plans = 0
     while True:
         if agent_location == goal:
             print("Agent reached goal state ", goal)
+            agent_path.append(agent_location)
             break
         # update agent's knowledge based on current location
         print("agent updating its knowledge of state graph")
         agent_state_graph = update_knowledge(agent_location, agent_state_graph, state_lattice, agent_vision)
         # make new A* plan
         path, cost, nodes_expanded = astar_search(agent_location, goal, agent_state_graph, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
+        astar_plans += 1
+        total_cost += cost
+        total_nodes_expanded += nodes_expanded
+        '''print("A* planning summary:")
+        print("Path: ", path)
+        print("Cost: ", cost)
+        print("# of nodes expanded: ", nodes_expanded)'''
         for state in path:
             if state_lattice[state[0]][state[1]] == 1: # can't go there!
                 break
             else:
                 agent_location = state
+                agent_path.append(agent_location)
                 print(agent_location)
-
-    '''print("Path: ", path)
-    print("Cost: ", cost)
-    print("# of nodes expanded: ", nodes_expanded)'''
+    print('Agent Summary: ')
+    print('Number of A* plans = ', astar_plans)
+    print('Agent Path = ', agent_path)
+    print('Total Path Cost = ', total_cost)
+    print('Total Number of Nodes Expanded = ', total_nodes_expanded)
 
 if __name__ == '__main__':
     main()
