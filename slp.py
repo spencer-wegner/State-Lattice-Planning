@@ -1,6 +1,7 @@
 import numpy as np
 #import matplotlib.pylab as plt
 import heapq
+import sys
 from scipy.spatial import distance
 
 # agent wheel direction
@@ -43,14 +44,10 @@ def build_state_lattice(nrows, ncols):
         for j in range(ncols):
             # randomly choose a 0 or 1 for each location - define probability
             # distribution with p = [0.x, 0.x]
-            list_row.append(np.random.choice([0,1], p = [0.5, 0.5]))
+            list_row.append(np.random.choice([0,1], p = [0.8, 0.2]))
         state_lattice.append(list_row)
     # in the state lattice, a '0' means the (x,y) position is open and a '1'
     # means the (x,y) position is blocked
-
-    print("State Lattice:")
-    for i in range(nrows):
-        print(state_lattice[i])
 
     return state_lattice
 
@@ -718,8 +715,12 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
 def main():
     # build a state lattice
     # adjust nrows and ncolumns to your liking
-    nrows = 10
-    ncols = 10
+
+    #nrows = 10
+    nrows = int(sys.argv[1])
+    #ncols = 10
+    ncols = int(sys.argv[2])
+
     state_lattice = build_state_lattice(nrows, ncols)
     state_graph_init = build_state_graph(state_lattice)
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
@@ -739,14 +740,20 @@ def main():
     print("agent vision: ", agent_vision)
     # adjust start and goal states and agent vision to your liking
     '''
+
     start = (0,0,s,c)
     goal = (8,8,n,l)
+
     if(state_lattice[start[0]][start[1]]==1):
         state_lattice[start[0]][start[1]]=0
     if(state_lattice[goal[0]][goal[1]]==1):
         state_lattice[goal[0]][goal[1]]=0
 
-    agent_vision = 1
+    print("State Lattice:")
+    for i in range(nrows):
+        print(state_lattice[i])
+
+    agent_vision = int(sys.argv[3])
 
     agent_location = start # variable to keep track of agent's location
 
