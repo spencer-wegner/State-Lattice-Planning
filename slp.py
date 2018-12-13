@@ -2,6 +2,7 @@ import numpy as np
 import heapq
 import sys
 from scipy.spatial import distance
+import matplotlib.pylab as plt
 
 # agent wheel direction
 c='center' # 0 degrees, straight ahead
@@ -714,7 +715,7 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
 def main():
     # build a state lattice
     # adjust nrows and ncolumns to your liking
-
+    '''
     #nrows = 10
     nrows = int(input("Number of Rows? (int) " ))
     #ncols = 10
@@ -743,27 +744,20 @@ def main():
     p1=float(input("Probability of an obstacle in any given location? (float between 0 and 1) "))
     p2=1-p1
     prob=[p2,p1]
+    '''
+    # Hard coded option
+    nrows = 10
+    ncols = 10
+    prob = [0.8, 0.2]
+    start = (0,0,n,c)
+    goal = (8,8,s,l)
+    agent_vision = 1
 
 
     state_lattice = build_state_lattice(nrows, ncols, prob)
     state_graph_init = build_state_graph(state_lattice)
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
     agent_state_graph = state_graph_complete # agent starts by thinking entire state space is free
-
-    '''
-    possible_locations = []
-    for i in range(len(state_lattice)):
-        for j in range(len(state_lattice[0])):
-            if state_lattice[i][j] == 0:
-                possible_locations.append((i,j))
-    print(possible_locations)
-    start = np.random.choice(possible_locations)
-    goal = np.random.choice(possible_locations)
-    print("start location: ", start)
-    print("goal location: ", goal)
-    print("agent vision: ", agent_vision)
-    # adjust start and goal states and agent vision to your liking
-    '''
 
     if(state_lattice[start[0]][start[1]]==1):
         state_lattice[start[0]][start[1]]=0
@@ -780,6 +774,8 @@ def main():
     total_cost = 0
     total_nodes_expanded = 0
     astar_plans = 0
+    store_astar_plans = []
+    graph_bool = True
     while True:
         if agent_location == goal:
             print("Agent reached goal state ", goal)
@@ -793,9 +789,10 @@ def main():
         astar_result = astar_search(agent_location, goal, agent_state_graph, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
         if(astar_result==None):
             print("************************\nNo possible path to goal\n************************\n")
-
+            graph_bool = False
             break
         path, cost, nodes_expanded = astar_result[0], astar_result[1], astar_result[2]
+        store_astar_plans.append(path)
         astar_plans += 1
         total_cost += cost
         total_nodes_expanded += nodes_expanded
@@ -817,12 +814,35 @@ def main():
         print(agent_path[i])
     print('Total Path Cost = ', total_cost)
     print('Total Number of Nodes Expanded = ', total_nodes_expanded)
-    # graph agent path
-    x = []
-    y = []
-    for state in agent_path:
-        x.append(state[0])
-        y.append(state[1])
+
+    if (graph_bool):
+        # graphing
+        # graph A* plans
+        plan_number = 0
+        color_list = ['b','g','r','c','m','y','turquoise', 'purple']
+        for plan in store_astar_plans:
+            x = []
+            y = []
+            for state in plan:
+                x.append(state[0])
+                y.append(state[1])
+            color_choice = color_list[plan_number]
+            plt.plot(x,y, 'o-', color = color_choice, label = 'A* Plan ' + str(plan_number))
+            plan_number += 1
+        # graph agent path
+        x = []
+        y = []
+        agent_path_copy = agent_path[1:len(agent_path)-1]
+        for state in agent_path_copy:
+            x.append(state[0])
+            y.append(state[1])
+        plt.plot(x,y,'ko', label = 'Agent Path')
+        # graph start and goal states
+        plt.plot(start[0], start[1], 'k^', label = 'Start', markersize = 12)
+        plt.plot(goal[0], goal[1], 'kD', label = 'Goal', markersize = 10)
+        plt.grid(True)
+        plt.legend()
+        plt.show()
 
 if __name__ == '__main__':
     main()
