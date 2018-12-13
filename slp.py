@@ -746,11 +746,11 @@ def main():
     prob=[p2,p1]
     '''
     # Hard coded option
-    nrows = 10
-    ncols = 10
-    prob = [0.7, 0.3]
-    start = (0,0,n,c)
-    goal = (8,8,s,l)
+    nrows = 25
+    ncols = 25
+    prob = [0.9, 0.1]
+    start = (0,0,s,c)
+    goal = (24,24,s,c)
     agent_vision = 1
 
 
@@ -818,11 +818,20 @@ def main():
 
     # graphing
     # graph state lattice
-    '''slx = []
-    sly = []
-    for x in state_lattice:
-        for y in state_lattice[x]:
-            slx.append(state_lattice)'''
+    slx0 = []
+    sly0 = []
+    slx1 = []
+    sly1 = []
+    for ii in range(len(state_lattice)):
+        for jj in range(len(state_lattice[0])):
+            if state_lattice[ii][jj] == 0:
+                slx0.append(ii)
+                sly0.append(jj)
+            elif state_lattice[ii][jj] == 1:
+                slx1.append(ii)
+                sly1.append(jj)
+    plt.plot(slx0, sly0, 'o', color = 'grey', label = "Open Nodes")
+    plt.plot(slx1, sly1, '1', color = 'grey', markersize = 15, label = "Blocked Nodes")
     # graph A* plans
     plan_number = 0
     color_list = ['b','g','r','c','m','y','turquoise', 'purple']
