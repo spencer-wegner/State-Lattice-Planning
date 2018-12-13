@@ -37,14 +37,14 @@ heading = [n,s,e,w]
 
 # this function constructs the state lattice — a list of lists (multi
 # dimensional array)
-def build_state_lattice(nrows, ncols):
+def build_state_lattice(nrows, ncols, prob):
     state_lattice = []
     for i in range(nrows):
         list_row = []
         for j in range(ncols):
             # randomly choose a 0 or 1 for each location - define probability
             # distribution with p = [0.x, 0.x]
-            list_row.append(np.random.choice([0,1], p = [0.8, 0.2]))
+            list_row.append(np.random.choice([0,1], p = prob))
         state_lattice.append(list_row)
     # in the state lattice, a '0' means the (x,y) position is open and a '1'
     # means the (x,y) position is blocked
@@ -717,11 +717,36 @@ def main():
     # adjust nrows and ncolumns to your liking
 
     #nrows = 10
-    nrows = int(sys.argv[1])
+    nrows = int(input("Number of Rows? (int) " ))
     #ncols = 10
-    ncols = int(sys.argv[2])
+    ncols = int(input("Number of Columns? (int) "))
+    agent_vision = int(input("Agent vision distance? (int) "))
+    start=[]
+    goal=[]
+    startInp = input("Start Position? X,Y,[north,south,east,west],[center,left,right] ")
+    startInp=startInp.split(",")
+    startInp[0]=int(startInp[0])
+    startInp[1]=int(startInp[1])
+    for i in heading:
+        if(startInp[2]==i):
+            startInp[2]=i
+    start=tuple(startInp)
 
-    state_lattice = build_state_lattice(nrows, ncols)
+    goalInp = input("Goal Position? X,Y,[north,south,east,west],[center,left,right] ")
+    goalInp=goalInp.split(",")
+    goalInp[0]=int(goalInp[0])
+    goalInp[1]=int(goalInp[1])
+    for i in angle:
+        if(goalInp[2]==i):
+            goalInp[2]=i
+    goal=tuple(goalInp)
+
+    p1=float(input("Probability of an obstacle in any given location? (float between 0 and 1) "))
+    p2=1-p1
+    prob=[p2,p1]
+
+
+    state_lattice = build_state_lattice(nrows, ncols, prob)
     state_graph_init = build_state_graph(state_lattice)
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
     agent_state_graph = state_graph_complete # agent starts by thinking entire state space is free
@@ -741,9 +766,6 @@ def main():
     # adjust start and goal states and agent vision to your liking
     '''
 
-    start = (0,0,s,c)
-    goal = (8,8,n,l)
-
     if(state_lattice[start[0]][start[1]]==1):
         state_lattice[start[0]][start[1]]=0
     if(state_lattice[goal[0]][goal[1]]==1):
@@ -752,8 +774,6 @@ def main():
     print("State Lattice:")
     for i in range(nrows):
         print(state_lattice[i])
-
-    agent_vision = int(sys.argv[3])
 
     agent_location = start # variable to keep track of agent's location
 
@@ -767,7 +787,7 @@ def main():
             agent_path.append(agent_location)
             break
         # update agent's knowledge based on current location
-        print("agent updating its knowledge of state graph\n")
+        #print("agent updating its knowledge of state graph\n")
         agent_state_graph = update_knowledge(agent_location, agent_state_graph, state_lattice, agent_vision)
         # make new A* plan
 
@@ -790,10 +810,12 @@ def main():
             else:
                 agent_location = state
                 agent_path.append(agent_location)
-                print(agent_location)
+                #print(agent_location)
     print('Agent Summary: ')
     print('Number of A* plans = ', astar_plans)
-    print('Agent Path = ', agent_path)
+    print('Agent Path: ')
+    for i in range(len(agent_path)):
+        print(agent_path[i])
     print('Total Path Cost = ', total_cost)
     print('Total Number of Nodes Expanded = ', total_nodes_expanded)
 
