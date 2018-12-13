@@ -748,7 +748,7 @@ def main():
     # Hard coded option
     nrows = 10
     ncols = 10
-    prob = [0.8, 0.2]
+    prob = [0.7, 0.3]
     start = (0,0,n,c)
     goal = (8,8,s,l)
     agent_vision = 1
@@ -815,34 +815,44 @@ def main():
     print('Total Path Cost = ', total_cost)
     print('Total Number of Nodes Expanded = ', total_nodes_expanded)
 
-    if (graph_bool):
-        # graphing
-        # graph A* plans
-        plan_number = 0
-        color_list = ['b','g','r','c','m','y','turquoise', 'purple']
-        for plan in store_astar_plans:
-            x = []
-            y = []
-            for state in plan:
-                x.append(state[0])
-                y.append(state[1])
-            color_choice = color_list[plan_number]
-            plt.plot(x,y, 'o-', color = color_choice, label = 'A* Plan ' + str(plan_number))
-            plan_number += 1
-        # graph agent path
+
+    # graphing
+    # graph state lattice
+    slx = []
+    sly = []
+    for x in state_lattice:
+        for y in state_lattice[x]:
+            slx.append(state_lattice)
+    # graph A* plans
+    plan_number = 0
+    color_list = ['b','g','r','c','m','y','turquoise', 'purple']
+    for plan in store_astar_plans:
         x = []
         y = []
-        agent_path_copy = agent_path[1:len(agent_path)-1]
-        for state in agent_path_copy:
+        for state in plan:
             x.append(state[0])
             y.append(state[1])
-        plt.plot(x,y,'ko', label = 'Agent Path')
-        # graph start and goal states
-        plt.plot(start[0], start[1], 'k^', label = 'Start', markersize = 12)
-        plt.plot(goal[0], goal[1], 'kD', label = 'Goal', markersize = 10)
-        plt.grid(True)
-        plt.legend()
-        plt.show()
+        color_choice = color_list[plan_number]
+        plt.plot(x,y, 'o-', color = color_choice, label = 'A* Plan ' + str(plan_number))
+        plan_number += 1
+    # graph agent path
+    x = []
+    y = []
+    agent_path_copy = agent_path[1:len(agent_path)-1]
+    for state in agent_path_copy:
+        x.append(state[0])
+        y.append(state[1])
+    plt.plot(x,y,'ko', label = 'Agent Path')
+    # graph start and goal states
+    plt.plot(start[0], start[1], 'k^', label = 'Start', markersize = 12)
+    plt.plot(goal[0], goal[1], 'kD', label = 'Goal', markersize = 10)
+    plt.grid(True)
+    if graph_bool == False:
+        plt.title("No path to goal", fontsize = 16)
+    plt.xlabel("x", fontsize=12)
+    plt.ylabel("y", fontsize=12)
+    plt.legend(loc = 'upper center', bbox_to_anchor = (0.5,1.15), ncol = 6)
+    plt.show()
 
 if __name__ == '__main__':
     main()
