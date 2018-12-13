@@ -818,11 +818,11 @@ def main():
 
     # graphing
     # graph state lattice
-    slx = []
+    '''slx = []
     sly = []
     for x in state_lattice:
         for y in state_lattice[x]:
-            slx.append(state_lattice)
+            slx.append(state_lattice)'''
     # graph A* plans
     plan_number = 0
     color_list = ['b','g','r','c','m','y','turquoise', 'purple']
