@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pylab as plt
 import heapq
 import sys
 from scipy.spatial import distance
@@ -824,9 +823,6 @@ def main():
     for state in agent_path:
         x.append(state[0])
         y.append(state[1])
-
-    fig, ax = plt.subplots(figsize = (10,5))
-    ax.plot(x, y, 'go-')
 
 if __name__ == '__main__':
     main()
