@@ -60,7 +60,7 @@ def build_state_graph(state_lattice):
             for h in heading:
                 for a in angle:
                     state_graph[(x,y,h,a)] = {}
-    print("# of nodes = ", len(state_graph))
+    #print("# of nodes = ", len(state_graph))
     return state_graph
 
 # this function creates the edges in the state graph
@@ -713,12 +713,10 @@ def astar_search(start, goal, state_graph, state_lattice, heuristic, return_cost
 
 # main function
 def main():
-    # build a state lattice
-    # adjust nrows and ncolumns to your liking
-    '''
-    #nrows = 10
+    # define parameters (rows, columns, vision, start state, goal state, probability distribution)
+    # comment out either the user option or the hard coded option
+    # user (raw input option)
     nrows = int(input("Number of Rows? (int) " ))
-    #ncols = 10
     ncols = int(input("Number of Columns? (int) "))
     agent_vision = int(input("Agent vision distance? (int) "))
     start=[]
@@ -731,7 +729,6 @@ def main():
         if(startInp[2]==i):
             startInp[2]=i
     start=tuple(startInp)
-
     goalInp = input("Goal Position? X,Y,[north,south,east,west],[center,left,right] ")
     goalInp=goalInp.split(",")
     goalInp[0]=int(goalInp[0])
@@ -740,74 +737,79 @@ def main():
         if(goalInp[2]==i):
             goalInp[2]=i
     goal=tuple(goalInp)
-
     p1=float(input("Probability of an obstacle in any given location? (float between 0 and 1) "))
     p2=1-p1
     prob=[p2,p1]
-    '''
+
     # Hard coded option
-    nrows = 25
-    ncols = 25
-    prob = [0.9, 0.1]
+    '''nrows = 10
+    ncols = 10
+    prob = [0.7, 0.3]
     start = (0,0,s,c)
-    goal = (24,24,s,c)
-    agent_vision = 1
+    goal = (9,9,s,c)
+    agent_vision = 5'''
 
-
+    # construct state lattice and state graph
     state_lattice = build_state_lattice(nrows, ncols, prob)
     state_graph_init = build_state_graph(state_lattice)
     state_graph_complete = assign_edges(state_lattice, state_graph_init)
     agent_state_graph = state_graph_complete # agent starts by thinking entire state space is free
 
+    # in the case that the randomization blocked our start or goal states
+    # we unblock them ;)
     if(state_lattice[start[0]][start[1]]==1):
         state_lattice[start[0]][start[1]]=0
     if(state_lattice[goal[0]][goal[1]]==1):
         state_lattice[goal[0]][goal[1]]=0
 
-    print("State Lattice:")
-    for i in range(nrows):
-        print(state_lattice[i])
-
+    # define important variables to keep track of
     agent_location = start # variable to keep track of agent's location
+    agent_path = [] # list to document agent's path
+    total_cost = 0 # total cost of agent's path
+    total_nodes_expanded = 0 # number of nodes expanded in A* search
+    astar_plans = 0 # number of A* plans that the agent makes
+    store_astar_plans = [] # store each A* plan to graph later
+    graph_bool = True # boolean to keep track of whether path to goal was reached - for graphing purposes
 
-    agent_path = []
-    total_cost = 0
-    total_nodes_expanded = 0
-    astar_plans = 0
-    store_astar_plans = []
-    graph_bool = True
+    # the process of making A* plans and maneuvering through the state space
     while True:
         if agent_location == goal:
-            print("Agent reached goal state ", goal)
+            print("************************\nAGENT REACHED GOAL STATE\n************************")
             agent_path.append(agent_location)
             break
         # update agent's knowledge based on current location
-        #print("agent updating its knowledge of state graph\n")
         agent_state_graph = update_knowledge(agent_location, agent_state_graph, state_lattice, agent_vision)
-        # make new A* plan
-
+        # make new A* plan based on updated knowledge
         astar_result = astar_search(agent_location, goal, agent_state_graph, state_lattice, euclidean_distance, return_cost = True, return_nexp = True)
-        if(astar_result==None):
-            print("************************\nNo possible path to goal\n************************\n")
+        if(astar_result == None): # if A* returns None, there is no path to the goal state
+            print("************************\nNO POSSIBLE PATH TO GOAL\n************************")
             graph_bool = False
             break
+        # assign A* information to variables
         path, cost, nodes_expanded = astar_result[0], astar_result[1], astar_result[2]
+        # document A* planned path
         store_astar_plans.append(path)
+        # update statistics
         astar_plans += 1
         total_cost += cost
         total_nodes_expanded += nodes_expanded
-        '''print("A* planning summary:")
-        print("Path: ", path)
-        print("Cost: ", cost)
-        print("# of nodes expanded: ", nodes_expanded)'''
+        # navigate agent based on current A* plan
         for state in path:
+            # agent senses blocked nodes right in front of it (the next planned state)
             if state_lattice[state[0]][state[1]] == 1: # can't go there!
                 break
+            # move agent along path
             else:
                 agent_location = state
                 agent_path.append(agent_location)
-                #print(agent_location)
-    print('Agent Summary: ')
+
+    # print out results
+    print('AGENT SUMMARY: ')
+    print('Start State: ', start)
+    print('Goal State: ', goal)
+    print('State Space Dimensions: {} x {} units'.format(nrows, ncols))
+    print('Agent Vision: ', agent_vision)
+    print('*************************************')
     print('Number of A* plans = ', astar_plans)
     print('Agent Path: ')
     for i in range(len(agent_path)):
@@ -815,8 +817,8 @@ def main():
     print('Total Path Cost = ', total_cost)
     print('Total Number of Nodes Expanded = ', total_nodes_expanded)
 
+    # graph results
 
-    # graphing
     # graph state lattice
     slx0 = []
     sly0 = []
@@ -832,6 +834,7 @@ def main():
                 sly1.append(jj)
     plt.plot(slx0, sly0, 'o', color = 'grey', label = "Open Nodes")
     plt.plot(slx1, sly1, '1', color = 'grey', markersize = 15, label = "Blocked Nodes")
+
     # graph A* plans
     plan_number = 0
     color_list = ['b','g','r','c','m','y','turquoise', 'purple']
@@ -844,7 +847,8 @@ def main():
         color_choice = color_list[plan_number]
         plt.plot(x,y, 'o-', color = color_choice, label = 'A* Plan ' + str(plan_number))
         plan_number += 1
-    # graph agent path
+
+    # graph actual agent path
     x = []
     y = []
     agent_path_copy = agent_path[1:len(agent_path)-1]
@@ -852,15 +856,21 @@ def main():
         x.append(state[0])
         y.append(state[1])
     plt.plot(x,y,'ko', label = 'Agent Path')
+
     # graph start and goal states
     plt.plot(start[0], start[1], 'k^', label = 'Start', markersize = 12)
     plt.plot(goal[0], goal[1], 'kD', label = 'Goal', markersize = 10)
     plt.grid(True)
+
+    # if there's no path to goal, indicate in graph
     if graph_bool == False:
         plt.title("No path to goal", fontsize = 16)
+
+    # add labels and a legend
     plt.xlabel("x", fontsize=12)
     plt.ylabel("y", fontsize=12)
     plt.legend(loc = 'upper center', bbox_to_anchor = (0.5,1.15), ncol = 6)
+    # show this shit!
     plt.show()
 
 if __name__ == '__main__':
