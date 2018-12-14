@@ -15,6 +15,5 @@ December 2018
 
 &nbsp;&nbsp;&nbsp;&nbsp;In this first example the agent vision is 1 unit and the probability of a node being blocked is 10%. The agent made two A* plans, incurred a path cost of 31 and expanded 954 nodes.
 The agent vision remains 1 unit for this second example but the probability of a node being blocked is now 30%. As the probability of blockages increases, the agent usually has to make more A* plans to find its way through the state space. Here, the agent made four A* plans, incurred a cost of 66, and expanded 1,740 nodes in the process.
-![Figure1]
-(https://github.com/spencer-wegner/State-Lattice-Planning/blob/master/images/Figure_1.png)
+![Figure1](https://github.com/spencer-wegner/State-Lattice-Planning/blob/master/images/Figure_1.png)
 Now we have increased the agent vision to 5 units. The probability of a node being blocked is still 30%. As the agent vision increases, the average number of A* plans that the agent has to make decreases because the agent can take in more information and apply
