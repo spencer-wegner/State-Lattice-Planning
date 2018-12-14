@@ -37,12 +37,12 @@ December 2018
 &nbsp;&nbsp;&nbsp;&nbsp;State Lattice Planning has clear real world application, especially for fields such as self- navigating robots and self-driving cars. These fields of computer science are among the most relevant and important areas of technological advancement today, which lent a sense of significance to this project. Overall, this project was an enlightening foray into these greater possibilities of State Lattice Planning, and A* search in real world application. It is clear that if the features of this project were further developed and expanded, that it would be able to be used in real world environments in a useful way. Things like making the wheel angle and heading continuous, and updating knowledge of a state space using actual sensor data would be some of the obvious next steps if this project were to be further developed. Additional modifications and improvements would need to be made in order for this implementation to work with an actual robot or vehicle. Even as a simulation, this implementation shows how powerful even basic state lattice planning can be when used to solve the seemingly daunting task of motion planning.
 
 ## Bibliography
-[Pivtoraiko, Knepper, Kelly - Differentially Constrained Mobile Robot Motion Planning in State Lattices](https://people.csail.mit.edu/rak/www/sites/default/files/pubs/PivKneKel09.pdf) \\ \\
+[Pivtoraiko, Knepper, Kelly - Differentially Constrained Mobile Robot Motion Planning in State Lattices](https://people.csail.mit.edu/rak/www/sites/default/files/pubs/PivKneKel09.pdf)
 
-    \href{https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/Betreute_Arbeiten/Diss-Shuiying.pdf}{Wang - State Lattice-based Motion Planning for Autonomous On-Road Driving} \\ \\
+[Wang - State Lattice-based Motion Planning for Autonomous On-Road Driving](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/Betreute_Arbeiten/Diss-Shuiying.pdf)
 
-    \href{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.225.4980&rep=rep1&type=pdf}{McNaughton, Urmson, Dolan, Lee - Motion Planning for Autonomous Driving with a Conformal Spatiotemporal Lattice} \\ \\
+[McNaughton, Urmson, Dolan, Lee - Motion Planning for Autonomous Driving with a Conformal Spatiotemporal Lattice](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.225.4980&rep=rep1&type=pdf)
 
-    \href{https://www.researchgate.net/publication/221064731_High_Performance_State_Lattice_Planning_Using_Heuristic_Look-Up_Tables}{Knepper, Kelley - High Performance State Lattice Planning Using Heuristic Look-Up Tables} \\ \\
+[Knepper, Kelley - High Performance State Lattice Planning Using Heuristic Look-Up Tables](https://www.researchgate.net/publication/221064731_High_Performance_State_Lattice_Planning_Using_Heuristic_Look-Up_Tables)
 
-    \href{https://www.ri.cmu.edu/publications/efficient-constrained-path-planning-via-search-in-state-lattices/}{Pivtoraiko, Kelley - Efficient Constrained Path Planning via Search in State Lattices}
+[Pivtoraiko, Kelley - Efficient Constrained Path Planning via Search in State Lattices](https://www.ri.cmu.edu/publications/efficient-constrained-path-planning-via-search-in-state-lattices/)
