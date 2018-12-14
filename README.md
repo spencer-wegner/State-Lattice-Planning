@@ -14,6 +14,35 @@ December 2018
 &nbsp;&nbsp;&nbsp;&nbsp;Here are a few outcomes of our state lattice planning agent with different parameters. In all of the following examples we set the start state to (0, 0, south, center) and the goal state to (9, 9, south, center), and worked with a 10x10 grid in order to show differences in the probability distribution of availability of nodes and the vision of the agent.
 
 &nbsp;&nbsp;&nbsp;&nbsp;In this first example the agent vision is 1 unit and the probability of a node being blocked is 10%. The agent made two A* plans, incurred a path cost of 31 and expanded 954 nodes.
-The agent vision remains 1 unit for this second example but the probability of a node being blocked is now 30%. As the probability of blockages increases, the agent usually has to make more A* plans to find its way through the state space. Here, the agent made four A* plans, incurred a cost of 66, and expanded 1,740 nodes in the process.
+
 ![Figure1](https://github.com/spencer-wegner/State-Lattice-Planning/blob/master/images/Figure_1.png)
-Now we have increased the agent vision to 5 units. The probability of a node being blocked is still 30%. As the agent vision increases, the average number of A* plans that the agent has to make decreases because the agent can take in more information and apply
+
+&nbsp;&nbsp;&nbsp;&nbsp;The agent vision remains 1 unit for this second example but the probability of a node being blocked is now 30%. As the probability of blockages increases, the agent usually has to make more A* plans to find its way through the state space. Here, the agent made four A* plans, incurred a cost of 66, and expanded 1,740 nodes in the process.
+
+![Figure3](https://github.com/spencer-wegner/State-Lattice-Planning/blob/master/images/Figure_3.png)
+
+&nbsp;&nbsp;&nbsp;&nbsp;Now we have increased the agent vision to 5 units. The probability of a node being blocked is still 30%. As the agent vision increases, the average number of A* plans that the agent has to make decreases because the agent can take in more information and apply more information to each plan. In this case the agent only needed two A* plans, incurred a cost of 35, and expanded 640 nodes. Because of the randomization of the state space, the comparisons are not direct, but it is natural to see that if the agent has less vision, the cost would have been higher and the agent most likely would have needed to make more A* plans.
+
+![Figure5](https://github.com/spencer-wegner/State-Lattice-Planning/blob/master/images/Figure_5.png)
+
+&nbsp;&nbsp;&nbsp;&nbsp;In this example, the agent vision is 4 units and the probability of a node being blocked is 30%. The agent agent expanded 1,376 nodes with a cost of 66 but did not find a path to the goal. As the probability of blockages increase, the probability of not finding a path to the goal increases. As is seen through the A* plans however, the agent continues to make A* plans as it makes its way through the state space until the A* planner returns None based on the agent’s current knowledge.
+
+![Figure4](https://github.com/spencer-wegner/State-Lattice-Planning/blob/master/images/Figure_4.png)
+
+&nbsp;&nbsp;&nbsp;&nbsp;Things get a little more interesting (and take much longer to compute) when we expand the search space to a size of 25x25. Here there is a 10% chance of each node being blocked. The agent made seven A* plans, incurred a cost of 231 and expanded 23,464 nodes.
+
+![Figure2](https://github.com/spencer-wegner/State-Lattice-Planning/blob/master/images/Figure_2.png)
+
+## Discussion and Conclusion
+&nbsp;&nbsp;&nbsp;&nbsp;State Lattice Planning has clear real world application, especially for fields such as self- navigating robots and self-driving cars. These fields of computer science are among the most relevant and important areas of technological advancement today, which lent a sense of significance to this project. Overall, this project was an enlightening foray into these greater possibilities of State Lattice Planning, and A* search in real world application. It is clear that if the features of this project were further developed and expanded, that it would be able to be used in real world environments in a useful way. Things like making the wheel angle and heading continuous, and updating knowledge of a state space using actual sensor data would be some of the obvious next steps if this project were to be further developed. Additional modifications and improvements would need to be made in order for this implementation to work with an actual robot or vehicle. Even as a simulation, this implementation shows how powerful even basic state lattice planning can be when used to solve the seemingly daunting task of motion planning.
+
+## Bibliography
+[Pivtoraiko, Knepper, Kelly - Differentially Constrained Mobile Robot Motion Planning in State Lattices](https://people.csail.mit.edu/rak/www/sites/default/files/pubs/PivKneKel09.pdf) \\ \\
+
+    \href{https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/Betreute_Arbeiten/Diss-Shuiying.pdf}{Wang - State Lattice-based Motion Planning for Autonomous On-Road Driving} \\ \\
+
+    \href{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.225.4980&rep=rep1&type=pdf}{McNaughton, Urmson, Dolan, Lee - Motion Planning for Autonomous Driving with a Conformal Spatiotemporal Lattice} \\ \\
+
+    \href{https://www.researchgate.net/publication/221064731_High_Performance_State_Lattice_Planning_Using_Heuristic_Look-Up_Tables}{Knepper, Kelley - High Performance State Lattice Planning Using Heuristic Look-Up Tables} \\ \\
+
+    \href{https://www.ri.cmu.edu/publications/efficient-constrained-path-planning-via-search-in-state-lattices/}{Pivtoraiko, Kelley - Efficient Constrained Path Planning via Search in State Lattices}
